@@ -6,9 +6,9 @@
 docker run --rm  \
         --ipc=host \
         --memory 16g \
-        --mount type=bind,source=/data1/zyx/learn2reg/LUMIR_L2R24_TrainVal/LUMIR_dataset.json,target=/LUMIR_dataset.json \
-        --mount type=bind,source=/data1/zyx/learn2reg/LUMIR_L2R24_TrainVal/,target=/input \
-        --mount type=bind,source=/data1/zyx/learn2reg/docker/DockerImage_EOIR/output/,target=/output \
+        --mount type=bind,source=./LUMIR_L2R24_TrainVal/LUMIR_dataset.json,target=/LUMIR_dataset.json \
+        --mount type=bind,source=./LUMIR_L2R24_TrainVal/,target=/input \
+        --mount type=bind,source=./docker/DockerImage_EOIR/output/,target=/output \
         eoir
 
 # #!/usr/bin/env bash

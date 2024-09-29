@@ -45,17 +45,16 @@ def save_nii(img, file_name, pix_dim=[1., 1., 1.]):
     x_nib.to_filename('{}.nii.gz'.format(file_name))
 
 def main():
-    input_dir = "/data1/zyx/learn2reg/LUMIR_L2R24_TrainVal/"
-    output_dir = "/data1/zyx/learn2reg/docker/DockerImage_EOIR/output/"
-    wts_dir = "/data1/zyx/learn2reg/docker/DockerImage_EOIR/pretrained_weights/"
-    json_dir = "/data1/zyx/learn2reg/LUMIR_L2R24_TrainVal/LUMIR_dataset.json"
+    input_dir = "./LUMIR_L2R24_TrainVal/"
+    output_dir = "./docker/DockerImage_EOIR/output/"
+    wts_dir = "./docker/DockerImage_EOIR/pretrained_weights/"
+    json_dir = "./LUMIR_L2R24_TrainVal/LUMIR_dataset.json"
  
     '''
     Initialize model
     '''
     model = EOIR(img_size = '(160, 224, 192)', start_channel = '32', lk_size = '5', cv_ks = '1', is_int = '1')
     pretrained = torch.load(wts_dir + natsorted(os.listdir(wts_dir))[0], map_location=torch.device('cpu'))
-    # print(pretrained.keys())
     model.load_state_dict(pretrained['model_state_dict'])
     print('model: {} loaded!'.format(natsorted(os.listdir(wts_dir))[0]))
 

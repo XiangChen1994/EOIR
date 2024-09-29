@@ -75,6 +75,3 @@ if __name__ == '__main__':
     opt['img_size'] = eval(opt['img_size'])
 
     run(opt)
-
-            
-
