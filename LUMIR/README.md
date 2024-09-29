@@ -4,9 +4,11 @@
 
 ## Introduction
 
+<div align=center>
 <img src=".\figure\net.png" width="80%" />
+</div>
 
-We introduce our solution for the  LUMIR challenge at [Learn2Reg 2024](https://learn2reg.grand-challenge.org/). This official repository houses our method (EOIR), training scripts, and pretrained models. According to the leaderboard, our method achieved a Dice coefficient of **77.37%**, which is **1.43%** higher than the TransMorph. For further details, please check out our paper and [**MICCAI WBIR 2024 workshop**]([WBIR](https://www.wbir.info/)).
+We introduce our solution for the  LUMIR challenge at [**Learn2Reg 2024**](https://learn2reg.grand-challenge.org/). This official repository houses our method (EOIR), training scripts, and pretrained models. According to the leaderboard, our method achieved a Dice coefficient of **77.37%**, which is **1.43%** higher than the TransMorph. For further details, please check out our paper and [**MICCAI WBIR 2024 workshop**](https://www.wbir.info/).
 
  [<img src="https://img.shields.io/badge/License-MIT-yellow.svg">](https://opensource.org/license/MIT)    [![arXiv](https://img.shields.io/badge/arXiv-2409.00917-b31b1b.svg)](https://arxiv.org/abs/2409.00917)
 
@@ -31,9 +33,7 @@ The final ranking will only be announced during the [**MICCAI WBIR 2024 workshop
 In the early acceptance, our team (**next-gen-nn**) have won the rank 2 on the LUMIR leaderboard! 
 
 According to the information released by the official organization of the competition, *the ranking process involved normalizing the scores using the Min-Max normalization technique.* After normalization, the scores were aggregated into a weighted average, calculated as follows:
-$$
-\text{Average Score}=\frac{1}{6}\times Norm. Dice + \frac{1}{6}\times Norm. HdDist95 + \frac{1}{3}\times Norm. TRE + \frac{1}{3}\times Norm. NDV
-$$
+$$\text{Average Score}=\frac{1}{6}\times Norm. Dice + \frac{1}{6}\times Norm. HdDist95 + \frac{1}{3}\times Norm. TRE + \frac{1}{3}\times Norm. NDV$$
 
 |           Author(Team)           | Normalized Dice | Normalized TRE | Normalized NDV | Normalized HdDist95 | Average Score |  Rank   |
 | :------------------------------: | :-------------: | :------------: | :------------: | :-----------------: | :-----------: | :-----: |
@@ -110,7 +110,9 @@ LUMIR_L2R24_TrainVal/SanityCheckLabelsTr/------
         .......
 ```
 
+<div align=center>
 <img src=".\figure\dataset.png" width="50%" />
+</div>
 
 ## Getting Started
 
