@@ -2,8 +2,6 @@ import torch
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-from models.backbones.voxelmorph.torch import layers
-#from models.backbones.layers import encoder
 
 class LK_encoder(nn.Module):
     def __init__(self, in_cs, out_cs, kernel_size=5, stride=1, padding=2):
@@ -36,8 +34,64 @@ class LK_encoder(nn.Module):
             x = x1 + x2 + x3 + x
         else:
             x = x1 + x2 + x3
-
         return self.prelu(x)
+
+class encoder(nn.Module):
+    def __init__(self, in_cs, out_cs, kernel_size=3, stride=1, padding=1):
+        super(encoder, self).__init__()
+        if kernel_size == 3:
+            self.layer = nn.Sequential(
+                nn.Conv3d(in_cs, out_cs, kernel_size, stride, padding),
+                nn.InstanceNorm3d(out_cs),
+                nn.PReLU()
+            )
+        elif kernel_size > 3:
+            self.layer = LK_encoder(in_cs, out_cs, kernel_size, stride, padding)
+
+    def forward(self, x):
+        return self.layer(x)
+    
+class SpatialTransformer(nn.Module):
+    def __init__(self, size, mode='bilinear'):
+        super().__init__()
+        self.mode = mode
+        vectors = [torch.arange(0, s) for s in size]
+        grids = torch.meshgrid(vectors)
+        grid = torch.stack(grids)
+        grid = torch.unsqueeze(grid, 0)
+        grid = grid.type(torch.FloatTensor)
+        self.register_buffer('grid', grid)
+
+    def forward(self, src, flow):
+        new_locs = self.grid + flow
+        shape = flow.shape[2:]
+        for i in range(len(shape)):
+            new_locs[:, i, ...] = 2 * (new_locs[:, i, ...] / (shape[i] - 1) - 0.5)
+
+        if len(shape) == 2:
+            new_locs = new_locs.permute(0, 2, 3, 1)
+            new_locs = new_locs[..., [1, 0]]
+        elif len(shape) == 3:
+            new_locs = new_locs.permute(0, 2, 3, 4, 1)
+            new_locs = new_locs[..., [2, 1, 0]]
+
+        return F.grid_sample(src, new_locs, align_corners=True, mode=self.mode)
+
+
+class VecInt(nn.Module):
+    def __init__(self, inshape, nsteps):
+        super().__init__()
+
+        assert nsteps >= 0, 'nsteps should be >= 0, found: %d' % nsteps
+        self.nsteps = nsteps
+        self.scale = 1.0 / (2 ** self.nsteps)
+        self.transformer = SpatialTransformer(inshape)
+
+    def forward(self, vec):
+        vec = vec * self.scale
+        for _ in range(self.nsteps):
+            vec = vec + self.transformer(vec, vec)
+        return vec
 
 class dispWarp(nn.Module):
 
@@ -50,11 +104,11 @@ class dispWarp(nn.Module):
         self.disp_field_fea = nn.Sequential(
             nn.Conv3d(2*in_cs, 2*in_cs, 3, 1, 1),
             nn.ReLU(inplace=True),
-            nn.Conv3d(2*in_cs, 8 * (ks*2+1)**3, 3, 1, 1),
+            nn.Conv3d(2*in_cs, (ks*2+1)**3, 3, 1, 1),
             nn.ReLU(inplace=True)
         )
 
-        self.get_flow = nn.Conv3d(8 * (ks*2+1)**3, 3, 3, 1, 1)
+        self.get_flow = nn.Conv3d((ks*2+1)**3, 3, 3, 1, 1)
         self.up_tri = torch.nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True)
 
     def disp_field(self, x, y):
@@ -75,22 +129,22 @@ class dispWarp(nn.Module):
             flow = integrate(flow)
 
         if up_flow is not None:
-            flow = flow + up_flow
+            flow = flow + transformer(up_flow, flow)
 
         up_flow = self.up_tri(flow) * 2
 
         return preint_flow, flow, up_flow
 
-class encoderOnlyComplexLK(nn.Module):
+class EOIR(nn.Module):
 
     def __init__(self, 
-        img_size='(160, 224, 192)', # (128,128,16) for ACDC
-        start_channel='64',
+        img_size='(160, 224, 192)', 
+        start_channel='16',
         lk_size= '5',
         cv_ks = '1',
         is_int = '1',
     ):
-        super(encoderOnlyComplexLK, self).__init__()
+        super(EOIR, self).__init__()
 
         self.img_size = eval(img_size)
         self.start_channel = int(start_channel)
@@ -98,18 +152,16 @@ class encoderOnlyComplexLK(nn.Module):
         self.cv_ks = int(cv_ks)
         self.is_int = int(is_int)
 
-        print("img_size: {}, start_channel: {}, lk_size: {}, cv_ks: {}, is_int: {}".format(self.img_size, self.start_channel, self.lk_size, self.cv_ks, self.is_int))
-
         N_s = self.start_channel
         self.simple_encoder = nn.Sequential(
-            LK_encoder(1,N_s,3,1,1),
-            LK_encoder(N_s,2*N_s,3,1,1),
-            LK_encoder(2*N_s,N_s,3,1,1),
+            encoder(1,N_s,3,1,1),
+            encoder(N_s,2*N_s,3,1,1),
+            encoder(2*N_s,N_s,3,1,1),
         )
 
         ss = self.img_size
-        self.transformers = nn.ModuleList([layers.SpatialTransformer((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i)) for i in range(5)])
-        self.integrates = nn.ModuleList([layers.VecInt((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i), 7) for i in range(5)])
+        self.transformers = nn.ModuleList([SpatialTransformer((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i)) for i in range(5)])
+        self.integrates = nn.ModuleList([VecInt((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i), 7) for i in range(5)])
         self.disp_warp_4 = dispWarp(N_s, self.cv_ks, self.is_int)
         self.disp_warp_3 = dispWarp(N_s, self.cv_ks, self.is_int)
         self.disp_warp_2 = dispWarp(N_s, self.cv_ks, self.is_int)

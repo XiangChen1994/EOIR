@@ -124,16 +124,12 @@ LUMIR_L2R24_TrainVal/SanityCheckLabelsTr/------
 bash train.sh
 ```
 
-**or use the command:**
-
-```bash
-python train_registration_lumir.py --epochs 201 -bs 1 --start_channel 32 --gpu_id 0
-```
-
 - ### Test
 
+**Run the bash script:**
+
 ```bash
-python test.py
+bash test.sh
 ```
 
 ## Docker
