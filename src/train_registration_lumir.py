@@ -189,12 +189,3 @@ if __name__ == '__main__':
     print('ncc_w: %.4f, reg_w: %.4f, img_size: %s' % (opt['ncc_w'], opt['reg_w'], opt['img_size']))
 
     run(opt)
-
-'''
-python train_registration_lumir_unsupervised.py -m someWarpComplex -d lumir_noseg -bs 1 --img_size '(160, 224, 192)' --start_channel 32
-python train_registration_lumir.py -m someWarpComplex -d lumir -bs 1 --num_classes 14 --gpu_id 0 --img_size '(160, 224, 192)'
-python train_registration.py -m someWarpComplex -d abdomenreg -bs 1 --num_classes 14 start_channel=32 101
-python train_registration.py -m someWarpComplex -d abdomenreg -bs 1 --num_classes 14 --gpu_id 4 start_channel=32 --epochs 101
-python train_registration.py -m someWarpComplex -d acdcreg -bs 1 --num_classes 4 --gpu_id 4 start_channel=32 --epochs 101 --img_size '(128, 128, 16)'
-python train_registration.py -m hmorph_heart -d acdcreg -bs 1 --num_classes 4 --gpu_id 4 start_channel=32 --epochs 101 --img_size '(128, 128, 16)'
-'''
