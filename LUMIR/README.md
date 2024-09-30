@@ -171,7 +171,8 @@ If you find this code is useful in your research, please consider to cite:
 ```
 
 ## Reference
-
+- [textSCF](https://github.com/tinymilky/TextSCF)
+- [DDIR](https://github.com/ccmim/DDIR)
 - [TransMorph](https://github.com/junyuchen245/TransMorph_Transformer_for_Medical_Image_Registration)
 - [VoxelMorph](https://github.com/voxelmorph/voxelmorph)
 - [SynthMorph](https://martinos.org/malte/synthmorph/)
