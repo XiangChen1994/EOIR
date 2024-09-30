@@ -6,7 +6,7 @@
 This repository hosts the official PyTorch implementation of "Encoder-Only Image Registration". EOIR is an efficient backbone network for image registration. It can achieve state-of-the-art registration performance on various registration tasks while keeping a relatively low number of registration parameters. We have demonstrated its efficacy in weakly-supervised and unsupervised inter-subject brain image registration, weakly-supervised inter-subject abdomen image registration and unsupervised intra-subject cardiac image registration.
 
 <p align="center">
-    <img src="https://github.com/XiangChen1994/EOIR/main/figs/encoder_flow_estimator.png" width="600"/>
+    <img src="https://githubusercontent.com/XiangChen1994/EOIR/main/figs/encoder_flow_estimator.png" width="600"/>
 </p>
 
 ## Papers
