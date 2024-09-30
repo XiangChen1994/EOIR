@@ -75,3 +75,10 @@ if __name__ == '__main__':
     opt['img_size'] = eval(opt['img_size'])
 
     run(opt)
+    '''
+    python test_registration_LUMIR.py --model EOIR --batch_size 1 --dataset lumir \
+                                  --gpu_id 0 --num_workers 4 --load_ckpt best \
+                                  --datasets_path ./LUMIR_L2R24_TrainVal \
+                                  --json_path ./LUMIR_L2R24_TrainVal/LUMIR_dataset.json\
+                                  --start_channel 32
+    '''

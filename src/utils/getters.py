@@ -6,7 +6,11 @@ import numpy as np
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from models import getModel
+
 from loaders.lumir_loader import L2RLUMIRJSONDataset
+from loaders.acdcreg_loader import acdcreg_loader
+from loaders.abdomenreg_loader import abdomenreg_loader
+from loaders.oasis_pkl_loader import oasis_pkl_loader
 
 from utils.functions import modelSaver, convert_state_dict
 
@@ -14,7 +18,16 @@ def loadDataset(opt, split = 'train'):
     dataset_name = opt['dataset']
     data_path = opt['data_path']
     json_path = opt['json_path']
-    loader = L2RLUMIRJSONDataset(base_dir = data_path, json_path = json_path, stage = split)
+    if dataset_name == 'acdcreg':
+        loader = acdcreg_loader(root_dir = data_path, split = split)
+    elif dataset_name == 'oasisreg':
+        loader = oasis_pkl_loader(root_dir = data_path, split = split)
+    elif dataset_name == 'abdomenreg':
+        loader = abdomenreg_loader(root_dir = data_path, split = split)
+    elif dataset_name == 'lumirreg':
+        loader = L2RLUMIRJSONDataset(base_dir = data_path, json_path = json_path, stage = split)
+    else:
+        raise ValueError('Unkown datasets: please define proper dataset name')
     print("----->>>> %s dataset is loaded ..." % dataset_name)
     return loader
 

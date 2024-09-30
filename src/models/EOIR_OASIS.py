@@ -7,21 +7,21 @@ from models.backbones.layers import encoder
 
 class dispWarp(nn.Module):
 
-    def __init__(self, in_cs, ks=1, is_int=1):
+    def __init__(self, in_cs, lk_size=5, ks=1, is_int=1):
 
         super(dispWarp, self).__init__()
 
         self.is_int = is_int
+        self.lk_size = lk_size
 
         self.disp_field_fea = nn.Sequential(
-            nn.Conv3d(2*in_cs, 2*in_cs, 3, 1, 1),
-            nn.ReLU(inplace=True),
+            encoder(2*in_cs, 2*in_cs, lk_size, 1, lk_size//2),
             nn.Conv3d(2*in_cs, (ks*2+1)**3, 3, 1, 1),
             nn.ReLU(inplace=True)
         )
 
         self.get_flow = nn.Conv3d((ks*2+1)**3, 3, 3, 1, 1)
-        self.up_tri = torch.nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True)
+        self.up_tri = torch.nn.Upsample(scale_factor=(2,2,2), mode='trilinear', align_corners=True)
 
     def disp_field(self, x, y):
 
@@ -47,16 +47,16 @@ class dispWarp(nn.Module):
 
         return preint_flow, flow, up_flow
 
-class EOIR(nn.Module):
+class EOIR_OASIS(nn.Module):
 
     def __init__(self, 
-        img_size='(160, 224, 192)', # (128,128,16) for ACDC
-        start_channel='16',
+        img_size='(192//2,160//2,256//2)', 
+        start_channel='8',
         lk_size= '5',
         cv_ks = '1',
-        is_int = '1',
+        is_int = '0', #1
     ):
-        super(EOIR, self).__init__()
+        super(EOIR_OASIS, self).__init__()
 
         self.img_size = eval(img_size)
         self.start_channel = int(start_channel)
@@ -66,28 +66,31 @@ class EOIR(nn.Module):
 
         print("img_size: {}, start_channel: {}, lk_size: {}, cv_ks: {}, is_int: {}".format(self.img_size, self.start_channel, self.lk_size, self.cv_ks, self.is_int))
 
+        lk_size = self.lk_size
         N_s = self.start_channel
         self.simple_encoder = nn.Sequential(
             encoder(1,N_s,3,1,1),
             encoder(N_s,2*N_s,3,1,1),
+            encoder(2*N_s,2*N_s,lk_size,1,lk_size//2),
             encoder(2*N_s,N_s,3,1,1),
         )
 
         ss = self.img_size
-        self.transformers = nn.ModuleList([layers.SpatialTransformer((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i)) for i in range(5)])
+        self.transformers = nn.ModuleList([layers.SpatialTransformer((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i)) for i in range(6)])
         self.integrates = nn.ModuleList([layers.VecInt((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i), 7) for i in range(5)])
-        self.disp_warp_4 = dispWarp(N_s, self.cv_ks, self.is_int)
-        self.disp_warp_3 = dispWarp(N_s, self.cv_ks, self.is_int)
-        self.disp_warp_2 = dispWarp(N_s, self.cv_ks, self.is_int)
-        self.disp_warp_1 = dispWarp(N_s, self.cv_ks, self.is_int)
-        self.disp_warp_0 = dispWarp(N_s, self.cv_ks, self.is_int)
+        self.disp_warp_4 = dispWarp(N_s, lk_size, self.cv_ks, self.is_int)
+        self.disp_warp_3 = dispWarp(N_s, lk_size, self.cv_ks, self.is_int)
+        self.disp_warp_2 = dispWarp(N_s, lk_size, self.cv_ks, self.is_int)
+        self.disp_warp_1 = dispWarp(N_s, lk_size, self.cv_ks, self.is_int)
+        self.disp_warp_0 = dispWarp(N_s, lk_size, self.cv_ks, self.is_int)
 
     def forward(self, x, y, registration=False):
 
         feas = self.simple_encoder(torch.cat([x, y], 0))
         x_feas, y_feas = torch.chunk(feas, 2, dim=0)
 
-        x_0, y_0 = x_feas, y_feas
+        x_0 = F.interpolate(x_feas, scale_factor=0.5, mode='trilinear', align_corners=True)
+        y_0 = F.interpolate(y_feas, scale_factor=0.5, mode='trilinear', align_corners=True)
 
         x_1 = F.interpolate(x_0, scale_factor=0.5, mode='trilinear', align_corners=True)
         y_1 = F.interpolate(y_0, scale_factor=0.5, mode='trilinear', align_corners=True)
@@ -98,17 +101,15 @@ class EOIR(nn.Module):
         x_3 = F.interpolate(x_2, scale_factor=0.5, mode='trilinear', align_corners=True)
         y_3 = F.interpolate(y_2, scale_factor=0.5, mode='trilinear', align_corners=True)
 
-        x_4 = F.interpolate(x_3, scale_factor=0.5, mode='trilinear', align_corners=True)
-        y_4 = F.interpolate(y_3, scale_factor=0.5, mode='trilinear', align_corners=True)
+        int_flow_3, pos_flow_3, up_flow_3 = self.disp_warp_3(x_3,y_3,self.transformers[4],None,self.integrates[4])
+        int_flow_2, pos_flow_2, up_flow_2 = self.disp_warp_2(x_2,y_2,self.transformers[3],up_flow_3,self.integrates[3])
+        int_flow_1, pos_flow_1, up_flow_1 = self.disp_warp_1(x_1,y_1,self.transformers[2],up_flow_2,self.integrates[2])
+        int_flow_0, pos_flow_0, _ = self.disp_warp_0(x_0,y_0,self.transformers[1],up_flow_1,self.integrates[1])
 
-        int_flow_4, pos_flow_4, up_flow_4 = self.disp_warp_4(x_4,y_4,self.transformers[4],None,self.integrates[4])
-        int_flow_3, pos_flow_3, up_flow_3 = self.disp_warp_3(x_3,y_3,self.transformers[3],up_flow_4,self.integrates[3])
-        int_flow_2, pos_flow_2, up_flow_2 = self.disp_warp_2(x_2,y_2,self.transformers[2],up_flow_3,self.integrates[2])
-        int_flow_1, pos_flow_1, up_flow_1 = self.disp_warp_1(x_1,y_1,self.transformers[1],up_flow_2,self.integrates[1])
-        int_flow_0, pos_flow_0, _ = self.disp_warp_0(x_0,y_0,self.transformers[0],up_flow_1,self.integrates[0])
+        int_flows = [int_flow_0, int_flow_1, int_flow_2, int_flow_3]
+        pos_flows = [pos_flow_0, pos_flow_1, pos_flow_2, pos_flow_3]
 
-        int_flows = [int_flow_0, int_flow_1, int_flow_2, int_flow_3, int_flow_4]
-        pos_flows = [pos_flow_0, pos_flow_1, pos_flow_2, pos_flow_3, pos_flow_4]
+        pos_flows = [F.interpolate(pos_flows[i]*2, scale_factor=2, mode='trilinear', align_corners=True) for i in range(4)]
 
         if not registration:
             return int_flows, pos_flows

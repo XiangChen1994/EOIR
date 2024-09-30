@@ -21,7 +21,7 @@ class dispWarp(nn.Module):
         )
 
         self.get_flow = nn.Conv3d((ks*2+1)**3, 3, 3, 1, 1)
-        self.up_tri = torch.nn.Upsample(scale_factor=2, mode='trilinear', align_corners=True)
+        self.up_tri = torch.nn.Upsample(scale_factor=(2,2,1), mode='trilinear', align_corners=True)
 
     def disp_field(self, x, y):
 
@@ -47,16 +47,16 @@ class dispWarp(nn.Module):
 
         return preint_flow, flow, up_flow
 
-class EOIR(nn.Module):
+class EOIR_ACDC(nn.Module):
 
     def __init__(self, 
-        img_size='(160, 224, 192)', # (128,128,16) for ACDC
-        start_channel='16',
+        img_size='(128,128,16)', # (128,128,16) for ACDC
+        start_channel='8',
         lk_size= '5',
         cv_ks = '1',
         is_int = '1',
     ):
-        super(EOIR, self).__init__()
+        super(EOIR_ACDC, self).__init__()
 
         self.img_size = eval(img_size)
         self.start_channel = int(start_channel)
@@ -74,8 +74,8 @@ class EOIR(nn.Module):
         )
 
         ss = self.img_size
-        self.transformers = nn.ModuleList([layers.SpatialTransformer((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i)) for i in range(5)])
-        self.integrates = nn.ModuleList([layers.VecInt((ss[0]//2**i,ss[1]//2**i,ss[2]//2**i), 7) for i in range(5)])
+        self.transformers = nn.ModuleList([layers.SpatialTransformer((ss[0]//2**i,ss[1]//2**i,ss[2])) for i in range(5)])
+        self.integrates = nn.ModuleList([layers.VecInt((ss[0]//2**i,ss[1]//2**i,ss[2]), 7) for i in range(5)])
         self.disp_warp_4 = dispWarp(N_s, self.cv_ks, self.is_int)
         self.disp_warp_3 = dispWarp(N_s, self.cv_ks, self.is_int)
         self.disp_warp_2 = dispWarp(N_s, self.cv_ks, self.is_int)
@@ -89,17 +89,17 @@ class EOIR(nn.Module):
 
         x_0, y_0 = x_feas, y_feas
 
-        x_1 = F.interpolate(x_0, scale_factor=0.5, mode='trilinear', align_corners=True)
-        y_1 = F.interpolate(y_0, scale_factor=0.5, mode='trilinear', align_corners=True)
+        x_1 = F.interpolate(x_0, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
+        y_1 = F.interpolate(y_0, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
 
-        x_2 = F.interpolate(x_1, scale_factor=0.5, mode='trilinear', align_corners=True)
-        y_2 = F.interpolate(y_1, scale_factor=0.5, mode='trilinear', align_corners=True)
+        x_2 = F.interpolate(x_1, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
+        y_2 = F.interpolate(y_1, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
 
-        x_3 = F.interpolate(x_2, scale_factor=0.5, mode='trilinear', align_corners=True)
-        y_3 = F.interpolate(y_2, scale_factor=0.5, mode='trilinear', align_corners=True)
+        x_3 = F.interpolate(x_2, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
+        y_3 = F.interpolate(y_2, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
 
-        x_4 = F.interpolate(x_3, scale_factor=0.5, mode='trilinear', align_corners=True)
-        y_4 = F.interpolate(y_3, scale_factor=0.5, mode='trilinear', align_corners=True)
+        x_4 = F.interpolate(x_3, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
+        y_4 = F.interpolate(y_3, scale_factor=(0.5, 0.5, 1), mode='trilinear', align_corners=True)
 
         int_flow_4, pos_flow_4, up_flow_4 = self.disp_warp_4(x_4,y_4,self.transformers[4],None,self.integrates[4])
         int_flow_3, pos_flow_3, up_flow_3 = self.disp_warp_3(x_3,y_3,self.transformers[3],up_flow_4,self.integrates[3])

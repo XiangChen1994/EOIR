@@ -1,14 +1,19 @@
-from models.EOIR import encoderOnlyComplex
+from models.EOIR import EOIR
+from models.EOIR_ACDC import EOIR_ACDC
+from models.EOIR_OASIS import EOIR_OASIS
 
 def getModel(opt):
 
     model_name = opt['model']
     nkwargs = opt['nkwargs']
     model = None
-    #print('333333333',model_name)
 
-    if 'encoderOnlyComplex' == model_name:
-        model = encoderOnlyComplex(img_size=str(opt['img_size']), start_channel=str(opt['start_channel']), lk_size='5', cv_ks='1', is_int='1')
+    if 'EOIR_ACDC' in model_name:
+        model = EOIR_ACDC(**nkwargs)
+    if 'EOIR_OASIS' in model_name:
+        model = EOIR_OASIS(**nkwargs)
+    if 'EOIR' in model_name:
+        model = EOIR(**nkwargs)
     else:
         raise ValueError("Model %s not recognized." % model_name)
 

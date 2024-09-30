@@ -189,3 +189,10 @@ if __name__ == '__main__':
     print('ncc_w: %.4f, reg_w: %.4f, img_size: %s' % (opt['ncc_w'], opt['reg_w'], opt['img_size']))
 
     run(opt)
+    '''
+    python train_registration_LUMIR.py --model EOIR --batch_size 1 --dataset lumir --gpu_id 0 \
+                                   --epochs 301 --reg_w 5.0 --ncc_w 1.0 --lr 4e-4 \
+                                   --start_channel 32 \
+                                   --json_path ./LUMIR_L2R24_TrainVal/LUMIR_dataset.json \
+                                   --datasets_path ./LUMIR_L2R24_TrainVal
+    '''
