@@ -19,7 +19,9 @@ arXiv 2024.
 ## Highlights
 
 - The EOIR ranks **2nd** on the validation set of task 2 in [MICCAI 2024 Learn2Reg Challenge](https://learn2reg.grand-challenge.org/) (details can be found in '\LUMIR').
-
+<p align="center">
+    <img src="./figs/lumir_rank.png" width="600"/>
+</p>
 
 - The EOIR achieves state-of-the-art registration performance with only limited registration parameters on four different datasets.
 <p align="center">
