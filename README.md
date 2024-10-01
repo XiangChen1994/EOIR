@@ -91,4 +91,4 @@ If our work has influenced or contributed to your research, please kindly acknow
 We extend our gratitude to [textSCF](https://github.com/tinymilky/TextSCF/tree/main), [LKU-Net](https://github.com/xi-jia/LKU-Net), [LapRIN](https://github.com/cwmok/LapIRN), [VoxelMorph](https://github.com/voxelmorph/voxelmorph), and [TransMorph](https://github.com/junyuchen245/TransMorph_Transformer_for_Medical_Image_Registration) for their valuable contributions. Portions of the code in this repository have been adapted from these sources.
 
 ###### Keywords
-Keywords: Cascade image registration, large deformation, Convolutional neural networks
+Keywords: Image registration, large deformation, Convolutional neural networks
