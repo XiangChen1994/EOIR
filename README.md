@@ -23,16 +23,16 @@ arXiv 2024.
 
 - The EOIR achieves state-of-the-art registration performance with only limited registration parameters on four different datasets.
 <p align="center">
-    <img src="./figs/eoir_abdomen.png" width="600"/>
+    <img src="./figs/eoir_abdomen.jpg" width="600"/>
 </p>
 <p align="center">
-    <img src="./figs/eoir_oasis.png" width="600"/>
+    <img src="./figs/eoir_oasis.jpg" width="600"/>
 </p>
 <p align="center">
-    <img src="./figs/eoir_lumir.png" width="600"/>
+    <img src="./figs/eoir_lumir.jpg" width="600"/>
 </p>
 <p align="center">
-    <img src="./figs/eoir_acdc.png" width="600"/>
+    <img src="./figs/eoir_acdc.jpg" width="600"/>
 </p>
 
 - EOIR is a novel efficient backbone network for image registration, which can be incorporated with more complex structures like large kernel ([LKU-Net](https://github.com/xi-jia/LKU-Net)), co-attention, and transformer ([TransMorph](https://github.com/junyuchen245/TransMorph_Transformer_for_Medical_Image_Registration)) to achieve better registration performance.  
