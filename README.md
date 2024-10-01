@@ -25,6 +25,15 @@ arXiv 2024.
 <p align="center">
     <img src="./figs/eoir_abdomen.png" width="600"/>
 </p>
+<p align="center">
+    <img src="./figs/eoir_oasis.png" width="600"/>
+</p>
+<p align="center">
+    <img src="./figs/eoir_lumir.png" width="600"/>
+</p>
+<p align="center">
+    <img src="./figs/eoir_acdc.png" width="600"/>
+</p>
 
 - EOIR is a novel efficient backbone network for image registration, which can be incorporated with more complex structures like large kernel ([LKU-Net](https://github.com/xi-jia/LKU-Net)), co-attention, and transformer ([TransMorph](https://github.com/junyuchen245/TransMorph_Transformer_for_Medical_Image_Registration)) to achieve better registration performance.  
 
@@ -37,6 +46,9 @@ We evaluate the registration performance of EOIR on four different datasets, inc
 Run the script with the following command in folder `./src` to reproduce the results:
 ```
 python train_registration.py -m EOIR -d abdomenreg -bs 1 --num_classes 14 start_channel=32 --gpu_id 0
+python train_registration.py -m EOIR_OASIS -d oasisreg -bs 1 --num_classes 36 start_channel=32 --gpu_id 0
+python train_registration_ACDC.py -m EOIR_ACDC -d acdcreg -bs 1 --num_classes 4 start_channel=32 --gpu_id 0
+python train_registration_LUMIR.py --model EOIR -d lumirreg -bs 1 start_channel=32 --gpu_id 0 
 ```
 
 - `-d abdomenreg`: Dataset used, specifically 'abdomenreg'.
@@ -47,7 +59,10 @@ python train_registration.py -m EOIR -d abdomenreg -bs 1 --num_classes 14 start_
 
 To test the trained model, run the script with the following command in folder `./src` to get the npz files:
 ```
-python test_abdomenreg.py -m EOIR -d abdomenreg -bs 1 start_channel=32 --gpu_id 5
+python test_registration_abdomen.py -m EOIR -d abdomenreg -bs 1 start_channel=32 --gpu_id 0
+python test_registration_OASIS.py -m EOIR_OASIS -d oasisreg -bs 1 start_channel=32 --gpu_id 0
+python test_registration_ACDC.py -m EOIR_ACDC -d acdcreg -bs 1 start_channel=32 --gpu_id 0 
+python test_registration_LUMIR.py -m EOIR -d lumirreg -bs 1 start_channel=32 --gpu_id 0 
 ```
 - `-d abdomenreg`: Dataset used, specifically 'abdomenreg'.
 - `-m EOIR`: Model name, set to 'EOIR'.

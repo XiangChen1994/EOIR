@@ -59,7 +59,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = "lumir")
     parser.add_argument("-m", "--model", type = str, default = 'EOIR')
     parser.add_argument("-bs", "--batch_size", type = int, default = 1)
-    parser.add_argument("-d", "--dataset", type = str, default = 'lumir')
+    parser.add_argument("-d", "--dataset", type = str, default = 'lumirreg')
     parser.add_argument("--gpu_id", type = str, default = '0')
     parser.add_argument("--num_workers", type = int, default = 4) # best, last or epoch
     parser.add_argument("--img_size", type = str, default = '(160, 224, 192)')
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     run(opt)
     '''
-    python test_registration_LUMIR.py --model EOIR --batch_size 1 --dataset lumir \
+    python test_registration_LUMIR.py --model EOIR --batch_size 1 --dataset lumirreg \
                                   --gpu_id 0 --num_workers 4 --load_ckpt best \
                                   --datasets_path ./LUMIR_L2R24_TrainVal \
                                   --json_path ./LUMIR_L2R24_TrainVal/LUMIR_dataset.json\

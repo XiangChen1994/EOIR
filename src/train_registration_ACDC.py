@@ -183,5 +183,5 @@ if __name__ == '__main__':
 
     run(opt)
     '''
-    python train_registration_ACDC.py -m EOIR_ACDC -d acdcreg -bs 1 --num_classes 4 start_channel=32 --gpu_id 5
+    python train_registration_ACDC.py -m EOIR_ACDC -d acdcreg -bs 1 --num_classes 4 start_channel=32 --gpu_id 0
     '''

@@ -142,5 +142,5 @@ if __name__ == '__main__':
 
     run(opt)
     '''
-    python test_abdomenreg.py -m EOIR -d abdomenreg -bs 1 start_channel=32 --gpu_id 5
+    python test_abdomenreg.py -m EOIR -d abdomenreg -bs 1 start_channel=32 --gpu_id 0
     '''

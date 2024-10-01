@@ -171,10 +171,10 @@ if __name__ == '__main__':
     parser.add_argument("--gpu_id", type = str, default = '0')
     parser.add_argument("-dp", "--datasets_path", type = str, default = "./LUMIR_L2R24_TrainVal")
     parser.add_argument("--json_path", type = str, default = "./LUMIR_L2R24_TrainVal/LUMIR_dataset.json")
-    parser.add_argument("--epochs", type = int, default = 101)
-    parser.add_argument("--reg_w", type = float, default = 1.)
+    parser.add_argument("--epochs", type = int, default = 301)
+    parser.add_argument("--reg_w", type = float, default = 5.)
     parser.add_argument("--ncc_w", type = float, default = 1.)
-    parser.add_argument("--lr", type = float, default = 1e-4)
+    parser.add_argument("--lr", type = float, default = 4e-4)
     parser.add_argument("--num_workers", type = int, default = 4)
     parser.add_argument("--img_size", type = str, default = '(160, 224, 192)')
     parser.add_argument("--start_channel", type = int, default = 32)
@@ -190,7 +190,7 @@ if __name__ == '__main__':
 
     run(opt)
     '''
-    python train_registration_LUMIR.py --model EOIR --batch_size 1 --dataset lumir --gpu_id 0 \
+    python train_registration_LUMIR.py --model EOIR --batch_size 1 --dataset lumirreg --gpu_id 0 \
                                    --epochs 301 --reg_w 5.0 --ncc_w 1.0 --lr 4e-4 \
                                    --start_channel 32 \
                                    --json_path ./LUMIR_L2R24_TrainVal/LUMIR_dataset.json \
