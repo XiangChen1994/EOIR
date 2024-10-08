@@ -17,7 +17,6 @@ We introduce our solution for the  LUMIR challenge at [**Learn2Reg 2024**](https
 |            Method             |     Dice↑      |  TRE(mm)↓  | NDV(%)↓ | HD95(mm)↓  |
 | :---------------------------: | :------------: | :--------: | :-----: | :--------: |
 | Zero Displacement(Before Reg) |   56.57±2.63​   |   4.3543​   | 0.0000​  |   4.7876​   |
-|              VFA              |   77.26±2.86   |   2.4949​   | 0.0788​  |   3.2127​   |
 |          TransMorph           |   75.94±3.19​   |   2.4225​   | 0.3509​  |   3.5074​   |
 |          uniGradICON          |   73.69±4.12​   |   2.5727​   | 0.0000​  |   3.6107​   |
 |          SynthMorph           |   72.43±2.94​   |   2.6099​   | 0.0000​  |   3.5730​   |
