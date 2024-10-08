@@ -10,7 +10,7 @@
 
 We introduce our solution for the  LUMIR challenge at [**Learn2Reg 2024**](https://learn2reg.grand-challenge.org/). This official repository houses our method (EOIR), training scripts, and pretrained models. According to the leaderboard, our method achieved a Dice coefficient of **77.37%**, which is **1.43%** higher than the TransMorph. For further details, please check out our paper and [**MICCAI WBIR 2024 workshop**](https://www.wbir.info/).
 
- [<img src="https://img.shields.io/badge/License-MIT-yellow.svg">](https://opensource.org/license/MIT)    [![arXiv](https://img.shields.io/badge/arXiv-2409.00917-b31b1b.svg)](https://arxiv.org/abs/2409.00917)
+[![Static Badge](https://img.shields.io/badge/MICCAI-Learn2Reg-%23214f5f?labelColor=%23ececec&link=https%3A%2F%2Flearn2reg.grand-challenge.org%2F)](https://learn2reg.grand-challenge.org/)    [<img src="https://img.shields.io/badge/License-MIT-yellow.svg">](https://opensource.org/license/MIT)    [![arXiv](https://img.shields.io/badge/arXiv-2409.00917-b31b1b.svg)](https://arxiv.org/abs/2409.00917)
 
 |            Method             |     Dice↑      |  TRE(mm)↓  | NDV(%)↓ | HD95(mm)↓  |
 | :---------------------------: | :------------: | :--------: | :-----: | :--------: |
@@ -28,12 +28,18 @@ We introduce our solution for the  LUMIR challenge at [**Learn2Reg 2024**](https
 
 The final ranking will only be announced during the [**MICCAI WBIR 2024 workshop**](https://www.wbir.info/) in Marrakesh by Sunday, October 6th.
 
+:2nd_place_medal: $\color{red}Congratulations !$ We won the 2nd place in task 2 LUMIR during the Test Phase.  [More Details.](https://github.com/JHU-MedImage-Reg/LUMIR_L2R) 
+
+<div align=center>
+<img src=".\figure\test_result.png" width="80%" />
+</div>
+
 - ### Early Acceptance and Initial Results [Snapshot Rank](https://github.com/JHU-MedImage-Reg/LUMIR_L2R/blob/6fd1cc17fe6ad1f460617163a6e824d5cdda105b/README.md) (updated: 07/31/2024):
 
 In the early acceptance, our team (**next-gen-nn**) have won the rank 2 on the LUMIR leaderboard! 
 
 According to the information released by the official organization of the competition, *the ranking process involved normalizing the scores using the Min-Max normalization technique.* After normalization, the scores were aggregated into a weighted average, calculated as follows:
-$$\text{Average Score}=\frac{1}{6}\times Norm. Dice + \frac{1}{6}\times Norm. HdDist95 + \frac{1}{3}\times Norm. TRE + \frac{1}{3}\times Norm. NDV$$
+$$\text{Average Score}=\frac{1}{6}\times \text{Norm. Dice} + \frac{1}{6}\times \text{Norm. HdDist95} + \frac{1}{3}\times \text{Norm. TRE} + \frac{1}{3}\times \text{Norm. NDV}$$
 
 |           Author(Team)           | Normalized Dice | Normalized TRE | Normalized NDV | Normalized HdDist95 | Average Score |  Rank   |
 | :------------------------------: | :-------------: | :------------: | :------------: | :-----------------: | :-----------: | :-----: |
