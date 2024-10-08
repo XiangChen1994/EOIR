@@ -12,15 +12,20 @@ We introduce our solution for the  LUMIR challenge at [**Learn2Reg 2024**](https
 
 [![Static Badge](https://img.shields.io/badge/MICCAI-Learn2Reg-%23214f5f?labelColor=%23ececec&link=https%3A%2F%2Flearn2reg.grand-challenge.org%2F)](https://learn2reg.grand-challenge.org/)    [<img src="https://img.shields.io/badge/License-MIT-yellow.svg">](https://opensource.org/license/MIT)    [![arXiv](https://img.shields.io/badge/arXiv-2409.00917-b31b1b.svg)](https://arxiv.org/abs/2409.00917)
 
+<div align=center>
+        
 |            Method             |     Dice↑      |  TRE(mm)↓  | NDV(%)↓ | HD95(mm)↓  |
 | :---------------------------: | :------------: | :--------: | :-----: | :--------: |
 | Zero Displacement(Before Reg) |   56.57±2.63​   |   4.3543​   | 0.0000​  |   4.7876​   |
+|              VFA              |   77.26±2.86   |   2.4949​   | 0.0788​  |   3.2127​   |
 |          TransMorph           |   75.94±3.19​   |   2.4225​   | 0.3509​  |   3.5074​   |
 |          uniGradICON          |   73.69±4.12​   |   2.5727​   | 0.0000​  |   3.6107​   |
 |          SynthMorph           |   72.43±2.94​   |   2.6099​   | 0.0000​  |   3.5730​   |
 |          VoxelMorph           |   71.86±3.40​   |   3.1545​   | 1.1836​  |   3.9821​   |
 |           deedsBCV            |   69.77±2.74​   | **2.2230** | 0.0001​  |   3.9540​   |
 |        **Ours(EOIR)**         | **77.37±3.11** |   2.3498​   | 0.0002​  | **3.3296** |
+
+</div>
 
 ## Competition Ranking
 
@@ -39,7 +44,12 @@ The final ranking will only be announced during the [**MICCAI WBIR 2024 workshop
 In the early acceptance, our team (**next-gen-nn**) have won the rank 2 on the LUMIR leaderboard! 
 
 According to the information released by the official organization of the competition, *the ranking process involved normalizing the scores using the Min-Max normalization technique.* After normalization, the scores were aggregated into a weighted average, calculated as follows:
+
+<div align=center>
+        
 $$\text{Average Score}=\frac{1}{6}\times \text{Norm. Dice} + \frac{1}{6}\times \text{Norm. HdDist95} + \frac{1}{3}\times \text{Norm. TRE} + \frac{1}{3}\times \text{Norm. NDV}$$
+
+</div>
 
 |           Author(Team)           | Normalized Dice | Normalized TRE | Normalized NDV | Normalized HdDist95 | Average Score |  Rank   |
 | :------------------------------: | :-------------: | :------------: | :------------: | :-----------------: | :-----------: | :-----: |
