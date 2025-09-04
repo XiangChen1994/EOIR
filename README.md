@@ -11,7 +11,7 @@ This repository hosts the official PyTorch implementation of "Encoder-Only Image
 
 ## Papers
 
-**[Encoder-Only Image Registration](https://arxiv.org/abs/2311.15607)** <br>
+**[Encoder-Only Image Registration](https://arxiv.org/abs/2509.00451)** <br>
 [Xiang Chen](https://grzy.hnu.edu.cn/site/index/chenxiang), Renjiu Hu, Min Liu, Yuxi Zhang, Yaonan Wang and [Hang Zhang](https://tinymilky.com). <br>
 arXiv 2024.
 
