@@ -24,9 +24,9 @@ We introduce our solution for the  LUMIR challenge at [**Learn2Reg 2024**](https
 |           deedsBCV            |   69.77±2.74​   | **2.2230** | 0.0001​  |   3.9540​   |
 |        **Ours(EOIR)**         | **77.37±3.11** |   2.3498​   | 0.0002​  | **3.3296** |
 
-$${\color{red}New!}$$ For more information about the LUMIR 2024 Challenge, please refer to the associated preprint summarizing LUMIR 2024 -> [![arXiv](https://img.shields.io/badge/arXiv-2505.24160-b31b1b.svg)](https://arxiv.org/abs/2505.24160)
-
 </div>
+
+$${\color{red}New!}$$ For more information about the LUMIR 2024 Challenge, please refer to the associated preprint summarizing LUMIR 2024 -> [![arXiv](https://img.shields.io/badge/arXiv-2505.24160-b31b1b.svg)](https://arxiv.org/abs/2505.24160)
 
 ## Competition Ranking
 
