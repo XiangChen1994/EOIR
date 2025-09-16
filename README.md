@@ -1,7 +1,7 @@
 # EOIR: Encoder-only Image Registration
 
 
-![Pytorch](https://img.shields.io/badge/Implemented%20in-Pytorch-red.svg) <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a> [![arXiv](https://img.shields.io/badge/arXiv-2111.10480-b31b1b.svg)](https://arxiv.org/abs/2311.15607)
+![Pytorch](https://img.shields.io/badge/Implemented%20in-Pytorch-red.svg) <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a> [![arXiv](https://img.shields.io/badge/arXiv-2111.10480-b31b1b.svg)](https://arxiv.org/abs/2509.00451)
 
 This repository hosts the official PyTorch implementation of "Encoder-Only Image Registration". EOIR is an efficient backbone network for image registration. It can achieve state-of-the-art registration performance on various registration tasks while keeping a relatively low number of registration parameters. We have demonstrated its efficacy in weakly-supervised and unsupervised inter-subject brain image registration, weakly-supervised inter-subject abdomen image registration and unsupervised intra-subject cardiac image registration.
 
