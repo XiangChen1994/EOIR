@@ -77,7 +77,7 @@ If our work has influenced or contributed to your research, please kindly acknow
 ```
 @article{chen2024encoder,
   title={Encoder-Only Image Registration},
-  author={Chen, Xiang and Hu, Renjiu, and Liu, Min and Zhang, Yuxi and Wang Yaonan and Zhang, Hang},
+  author={Chen, Xiang and Hu, Renjiu and Zhang, Jinwei and Zhang, Yuxi and Yu, Xinyao and Liu, Min and Wang, Yaonan and Zhang, Hang},
   journal={IEEE Transactions on Circuits and Systems for Video Technology},
   year={2026},
   publisher={IEEE}
